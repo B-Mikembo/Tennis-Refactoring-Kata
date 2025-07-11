@@ -3,6 +3,8 @@ import java.util.Objects;
 public class TennisGame1 implements TennisGame {
 
     public static final int WIN_SCORE = 4;
+    public static final int NUMBER_OF_PLAYERS = 2;
+    public static final int WIN_GAP = 2;
     private int player1Score = 0;
     private int player2Score = 0;
     private String player1Name;
@@ -21,48 +23,45 @@ public class TennisGame1 implements TennisGame {
     }
 
     public String getScore() {
-        String score = "";
         if (isPat()) {
             return computePatScore();
         }
         if (!isOnePlayerReachedWinScore()) {
-            return computeInProgressGameScore(score);
+            return computeInProgressGameScore();
         }
-        int minusResult = computePlayer1ScoreMinusPlayer2Score();
+        int minusResult = computePlayer1AndPlayer2ScoreGap();
         if (isPlayerOneAdvantage(minusResult)) return "Advantage player1";
         if (isPlayerTwoAdvantage(minusResult)) return "Advantage player2";
         if (isPlayerOneWinner(minusResult)) return "Win for player1";
         return "Win for player2";
     }
 
-    private String computeInProgressGameScore(String score) {
-        int tempScore;
-        for (int i = 1; i < 3; i++) {
-            if (i == 1) tempScore = player1Score;
+    private String computeInProgressGameScore() {
+        var score = new StringBuilder();
+        int currentScore;
+        for (int i = 1; i <= NUMBER_OF_PLAYERS; i++) {
+            if (i == 1) currentScore = player1Score;
             else {
-                score += "-";
-                tempScore = player2Score;
+                score.append("-");
+                currentScore = player2Score;
             }
-            switch (tempScore) {
-                case 0:
-                    score += "Love";
-                    break;
-                case 1:
-                    score += "Fifteen";
-                    break;
-                case 2:
-                    score += "Thirty";
-                    break;
-                case 3:
-                    score += "Forty";
-                    break;
-            }
+            score.append(getLiteralScoreForScore(currentScore));
         }
-        return score;
+        return score.toString();
+    }
+
+    private static String getLiteralScoreForScore(int score) {
+        return switch (score) {
+            case 0 -> "Love";
+            case 1 -> "Fifteen";
+            case 2 -> "Thirty";
+            case 3 -> "Forty";
+            default -> throw new IllegalStateException("Unexpected value: " + score);
+        };
     }
 
     private static boolean isPlayerOneWinner(int minusResult) {
-        return minusResult >= 2;
+        return minusResult >= WIN_GAP;
     }
 
     private static boolean isPlayerTwoAdvantage(int minusResult) {
@@ -73,7 +72,7 @@ public class TennisGame1 implements TennisGame {
         return minusResult == 1;
     }
 
-    private int computePlayer1ScoreMinusPlayer2Score() {
+    private int computePlayer1AndPlayer2ScoreGap() {
         return player1Score - player2Score;
     }
 
