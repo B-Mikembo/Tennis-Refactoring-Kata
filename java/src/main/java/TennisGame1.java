@@ -1,5 +1,6 @@
 import java.util.Objects;
 
+//  TODO: implement player record to encapsulate player behavior
 public class TennisGame1 implements TennisGame {
 
     public static final int WIN_SCORE = 4;
