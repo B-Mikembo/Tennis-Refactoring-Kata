@@ -25,11 +25,11 @@ public class TennisGame1 implements TennisGame {
         if (isPat()) {
             return computePatScore();
         }
-        int minusResult = computePlayer1ScoreMinusPlayer2Score();
         if (!isOnePlayerReachedWinScore()) {
             return computeInProgressGameScore(score);
         }
-        if (isPlayerOneAdvantage(minusResult)) return"Advantage player1";
+        int minusResult = computePlayer1ScoreMinusPlayer2Score();
+        if (isPlayerOneAdvantage(minusResult)) return "Advantage player1";
         if (isPlayerTwoAdvantage(minusResult)) return "Advantage player2";
         if (isPlayerOneWinner(minusResult)) return "Win for player1";
         return "Win for player2";
