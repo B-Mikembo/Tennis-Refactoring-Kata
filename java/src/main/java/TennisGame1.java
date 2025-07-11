@@ -22,7 +22,6 @@ public class TennisGame1 implements TennisGame {
 
     public String getScore() {
         String score = "";
-        int tempScore = 0;
         if (isPat()) {
             score = computePatScore();
         } else if (isOnePlayerReachedWinScore()) {
@@ -32,26 +31,32 @@ public class TennisGame1 implements TennisGame {
             else if (isPlayerOneWinner(minusResult)) score = "Win for player1";
             else score = "Win for player2";
         } else {
-            for (int i = 1; i < 3; i++) {
-                if (i == 1) tempScore = player1Score;
-                else {
-                    score += "-";
-                    tempScore = player2Score;
-                }
-                switch (tempScore) {
-                    case 0:
-                        score += "Love";
-                        break;
-                    case 1:
-                        score += "Fifteen";
-                        break;
-                    case 2:
-                        score += "Thirty";
-                        break;
-                    case 3:
-                        score += "Forty";
-                        break;
-                }
+            score = computeInProgressGameScore(score);
+        }
+        return score;
+    }
+
+    private String computeInProgressGameScore(String score) {
+        int tempScore;
+        for (int i = 1; i < 3; i++) {
+            if (i == 1) tempScore = player1Score;
+            else {
+                score += "-";
+                tempScore = player2Score;
+            }
+            switch (tempScore) {
+                case 0:
+                    score += "Love";
+                    break;
+                case 1:
+                    score += "Fifteen";
+                    break;
+                case 2:
+                    score += "Thirty";
+                    break;
+                case 3:
+                    score += "Forty";
+                    break;
             }
         }
         return score;
