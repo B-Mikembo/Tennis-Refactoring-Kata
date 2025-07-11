@@ -2,6 +2,7 @@ import java.util.Objects;
 
 public class TennisGame1 implements TennisGame {
 
+    public static final int WIN_SCORE = 4;
     private int player1Score = 0;
     private int player2Score = 0;
     private String player1Name;
@@ -22,18 +23,13 @@ public class TennisGame1 implements TennisGame {
     public String getScore() {
         String score = "";
         int tempScore = 0;
-        if (player1Score == player2Score) {
-            score = switch (player1Score) {
-                case 0 -> "Love-All";
-                case 1 -> "Fifteen-All";
-                case 2 -> "Thirty-All";
-                default -> "Deuce";
-            };
-        } else if (player1Score >= 4 || player2Score >= 4) {
-            int minusResult = player1Score - player2Score;
-            if (minusResult == 1) score = "Advantage player1";
-            else if (minusResult == -1) score = "Advantage player2";
-            else if (minusResult >= 2) score = "Win for player1";
+        if (isPat()) {
+            score = computePatScore();
+        } else if (isOnePlayerReachedWinScore()) {
+            int minusResult = computePlayer1ScoreMinusPlayer2Score();
+            if (isPlayerOneAdvantage(minusResult)) score = "Advantage player1";
+            else if (isPlayerTwoAdvantage(minusResult)) score = "Advantage player2";
+            else if (isPlayerOneWinner(minusResult)) score = "Win for player1";
             else score = "Win for player2";
         } else {
             for (int i = 1; i < 3; i++) {
@@ -59,5 +55,40 @@ public class TennisGame1 implements TennisGame {
             }
         }
         return score;
+    }
+
+    private static boolean isPlayerOneWinner(int minusResult) {
+        return minusResult >= 2;
+    }
+
+    private static boolean isPlayerTwoAdvantage(int minusResult) {
+        return minusResult == -1;
+    }
+
+    private static boolean isPlayerOneAdvantage(int minusResult) {
+        return minusResult == 1;
+    }
+
+    private int computePlayer1ScoreMinusPlayer2Score() {
+        return player1Score - player2Score;
+    }
+
+    private boolean isOnePlayerReachedWinScore() {
+        return player1Score >= WIN_SCORE || player2Score >= WIN_SCORE;
+    }
+
+    private String computePatScore() {
+        String score;
+        score = switch (player1Score) {
+            case 0 -> "Love-All";
+            case 1 -> "Fifteen-All";
+            case 2 -> "Thirty-All";
+            default -> "Deuce";
+        };
+        return score;
+    }
+
+    private boolean isPat() {
+        return player1Score == player2Score;
     }
 }
