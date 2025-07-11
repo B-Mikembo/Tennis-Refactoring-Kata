@@ -23,17 +23,16 @@ public class TennisGame1 implements TennisGame {
     public String getScore() {
         String score = "";
         if (isPat()) {
-            score = computePatScore();
-        } else if (isOnePlayerReachedWinScore()) {
-            int minusResult = computePlayer1ScoreMinusPlayer2Score();
-            if (isPlayerOneAdvantage(minusResult)) score = "Advantage player1";
-            else if (isPlayerTwoAdvantage(minusResult)) score = "Advantage player2";
-            else if (isPlayerOneWinner(minusResult)) score = "Win for player1";
-            else score = "Win for player2";
-        } else {
-            score = computeInProgressGameScore(score);
+            return computePatScore();
         }
-        return score;
+        int minusResult = computePlayer1ScoreMinusPlayer2Score();
+        if (!isOnePlayerReachedWinScore()) {
+            return computeInProgressGameScore(score);
+        }
+        if (isPlayerOneAdvantage(minusResult)) return"Advantage player1";
+        if (isPlayerTwoAdvantage(minusResult)) return "Advantage player2";
+        if (isPlayerOneWinner(minusResult)) return "Win for player1";
+        return "Win for player2";
     }
 
     private String computeInProgressGameScore(String score) {
