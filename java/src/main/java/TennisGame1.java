@@ -30,11 +30,31 @@ public class TennisGame1 implements TennisGame {
         if (!isOnePlayerReachedWinScore()) {
             return computeInProgressGameScore();
         }
+        return computeFinalGameScore();
+    }
+
+    private String computeFinalGameScore() {
         int minusResult = computePlayer1AndPlayer2ScoreGap();
         if (isPlayerOneAdvantage(minusResult)) return "Advantage player1";
         if (isPlayerTwoAdvantage(minusResult)) return "Advantage player2";
         if (isPlayerOneWinner(minusResult)) return "Win for player1";
         return "Win for player2";
+    }
+
+    private static boolean isPlayerOneWinner(int minusResult) {
+        return minusResult >= WIN_GAP;
+    }
+
+    private static boolean isPlayerTwoAdvantage(int minusResult) {
+        return minusResult == -1;
+    }
+
+    private static boolean isPlayerOneAdvantage(int minusResult) {
+        return minusResult == 1;
+    }
+
+    private int computePlayer1AndPlayer2ScoreGap() {
+        return player1Score - player2Score;
     }
 
     private String computeInProgressGameScore() {
@@ -59,22 +79,6 @@ public class TennisGame1 implements TennisGame {
             case 3 -> "Forty";
             default -> throw new IllegalStateException("Unexpected value: " + score);
         };
-    }
-
-    private static boolean isPlayerOneWinner(int minusResult) {
-        return minusResult >= WIN_GAP;
-    }
-
-    private static boolean isPlayerTwoAdvantage(int minusResult) {
-        return minusResult == -1;
-    }
-
-    private static boolean isPlayerOneAdvantage(int minusResult) {
-        return minusResult == 1;
-    }
-
-    private int computePlayer1AndPlayer2ScoreGap() {
-        return player1Score - player2Score;
     }
 
     private boolean isOnePlayerReachedWinScore() {
