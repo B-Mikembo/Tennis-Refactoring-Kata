@@ -40,8 +40,8 @@ public class TennisGame1 implements TennisGame {
     private String computeInProgressGameScore() {
         var score = new StringBuilder();
         int currentScore;
-        for (int i = 1; i <= NUMBER_OF_PLAYERS; i++) {
-            if (i == 1) currentScore = player1Score;
+        for (int playerNumber = 1; playerNumber <= NUMBER_OF_PLAYERS; playerNumber++) {
+            if (playerNumber == 1) currentScore = player1Score;
             else {
                 score.append("-");
                 currentScore = player2Score;
